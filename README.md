@@ -2,7 +2,6 @@
 
 An NLP-based machine learning system that automatically classifies customer support queries into six different intents using TF-IDF and an XGBoost classifier.
 
-<<<<<<< HEAD
 ---
 
 ## 📌 Project Overview

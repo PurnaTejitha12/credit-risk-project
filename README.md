@@ -337,7 +337,4 @@ Confusion Matrix
 
 Purna Tejitha
 
-📄 License
 
-This project is developed for educational and academic purposes.
->>>>>>> 74436d93fbbb8ff45e7d7a6f4dc4b23c9489513e

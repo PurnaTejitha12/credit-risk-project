@@ -88,31 +88,51 @@ Intent Prediction + Confidence Score
 
 Pipeline Steps
 Data Loading – Load customer support queries from the CSV dataset.
+
 Data Validation – Check dataset structure and missing values.
+
 Text Cleaning – Prepare customer messages for NLP processing.
+
 Label Encoding – Convert intent categories into numerical labels.
+
 Train-Test Split – Divide the data into training and testing sets.
+
 TF-IDF Feature Extraction – Convert text into numerical feature vectors.
+
 XGBoost Classification – Use XGBoost for multiclass classification.
+
 Model Evaluation – Evaluate classification performance.
+
 Model Saving – Save the trained model and vectorizer.
+
 Prediction – Process new queries and return the predicted intent and confidence.
+
 Evaluation Metrics
 
 The model will be evaluated using:
 
 Accuracy – Overall percentage of correctly classified queries.
+
 Precision – Measures the correctness of positive predictions for each intent.
+
 Recall – Measures how many queries of each intent are correctly identified.
+
 F1-Score – Harmonic mean of precision and recall.
+
 Macro F1-Score – Gives equal importance to all six intent categories.
+
 Confusion Matrix – Shows correct and incorrect classifications for each intent.
+
 Example
+
 Input
+
 Where is my order?
 
 Expected Output
+
 Intent: order_status
+
 Confidence: 80.27%
 
 
@@ -126,30 +146,40 @@ Expected intent:
 return_request
 
 Technologies Used
+
 Python
+
 XGBoost
+
 Scikit-learn
+
 TF-IDF
+
 Pandas
+
 NumPy
+
 Joblib
+
 Project Structure
+
 credit-risk-project/
 │
 ├── app.py
+
 ├── data_pipeline.py
+
 ├── xgboost_credit_risk_model.json
+
 ├── text_vectorizer.pkl
+
 ├── requirements.txt
+
 ├── .gitignore
+
 └── README.md
 
 Installation
-
-Clone the repository:
-
-git clone YOUR_GITHUB_REPOSITORY_URL
-cd credit-risk-project
 
 
 Install the required dependencies:
@@ -185,28 +215,53 @@ text_vectorizer.pkl
 These files allow the trained model to be reused without retraining.
 
 Current Development Status
- Dataset collected and inspected
- Six intent categories identified
- XGBoost model obtained
- TF-IDF vectorizer obtained
- Model loading implemented
- Basic prediction tested
- Project README created
- Requirements file created
- Resolve final feature preprocessing mismatch
- Add label decoder for human-readable intent names
- Complete model evaluation
- Add Streamlit user interface
- Add SHAP-based explanations
- Deploy application
+
+Dataset collected and inspected
+
+Six intent categories identified
+
+XGBoost model obtained
+
+TF-IDF vectorizer obtained
+
+Model loading implemented
+
+Basic prediction tested
+ 
+Project README created
+
+Requirements file created
+
+Resolve final feature preprocessing mismatch
+
+Add label decoder for human-readable intent names
+
+Complete model evaluation
+
+Add Streamlit user interface
+
+Add SHAP-based explanations
+ 
+Deploy application
+
 Future Improvements
+
 Develop a Streamlit-based web interface.
+
 Add SHAP explanations for model predictions.
+
 Improve the training dataset with more customer queries.
+
 Perform hyperparameter tuning for XGBoost.
+
 Add automated responses for each intent.
+
 Deploy the application as a web service.
+
 Add continuous model evaluation and monitoring.
+
 Conclusion
 
-This project demonstrates an end-to-end NLP intent classification approach using TF-IDF and XGBoost. It provides a foundation for developing an intelligent customer-support system capable of automatically understanding and categorizing customer queries.
+This project demonstrates an end-to-end NLP intent classification approach using TF-IDF and XGBoost. It provides a foundation for developing an intelligent customer-support 
+
+system capable of automatically understanding and categorizing customer queries.

@@ -6,6 +6,66 @@ Overview
 
 This project uses Natural Language Processing (NLP) and Machine Learning to automatically identify the intent behind customer support messages.
 
+## Model Architecture
+
+The system follows an NLP-based customer intent classification pipeline:
+
+```text
+Customer Query
+      ↓
+Text Preprocessing
+      ↓
+TF-IDF Vectorization
+      ↓
+Feature Representation
+      ↓
+XGBoost Classifier
+      ↓
+Intent Prediction
+      ↓
+Confidence Score
+
+## Data Pipeline
+
+The project follows the following data processing and machine learning pipeline:
+
+```text
+Customer Support Dataset
+        ↓
+Data Loading
+        ↓
+Data Validation & Cleaning
+        ↓
+Text and Intent Separation
+        ↓
+Label Encoding
+        ↓
+Train-Test Split
+        ↓
+TF-IDF Feature Extraction
+        ↓
+XGBoost Multiclass Classification
+        ↓
+Model Evaluation
+        ↓
+Model & Vectorizer Saving
+        ↓
+New Customer Query
+        ↓
+Intent Prediction + Confidence Score
+
+Pipeline Steps
+Data Loading – Load customer support queries from the CSV dataset.
+Data Validation – Check the dataset structure and missing values.
+Text Cleaning – Prepare customer messages for NLP processing.
+Label Encoding – Convert the six intent categories into numerical labels.
+Train-Test Split – Divide the dataset into training and testing sets.
+TF-IDF Vectorization – Convert text messages into numerical feature vectors.
+XGBoost Classification – Train the multiclass XGBoost model using the extracted features.
+Model Evaluation – Evaluate performance using accuracy, precision, recall, F1-score, and a confusion matrix.
+Model Saving – Save the trained XGBoost model and TF-IDF vectorizer for future predictions.
+Prediction – Process new customer queries and return the predicted intent and confidence score.
+
 The system classifies user queries into six categories:
 
 order_status

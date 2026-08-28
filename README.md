@@ -44,49 +44,78 @@ Model Architecture
 The system follows an NLP-based classification architecture:
 
 Customer Support Query
+
           ↓
+          
 Text Preprocessing
+
           ↓
+          
 TF-IDF Vectorization
+
           ↓
+          
 Feature Representation
+
           ↓
 XGBoost Multiclass Classifier
+
           ↓
 Intent Prediction
+
           ↓
 Confidence Score
 
+
 Architecture Description
 
-The customer query is first processed and converted into numerical features using TF-IDF vectorization. These features are passed to an XGBoost multiclass classifier, which predicts one of the six predefined customer-support intents. The system then calculates the confidence of the prediction.
+The customer query is first processed and converted into numerical features using TF-IDF vectorization. These features are passed to an XGBoost multiclass classifier, which 
+
+predicts one of the six predefined customer-support intents. The system then calculates the confidence of the prediction.
 
 Data Pipeline
 Customer Support Dataset
+
           ↓
+          
 Data Loading
+
           ↓
+          
 Data Validation & Cleaning
+
           ↓
+          
 Text and Intent Separation
+
           ↓
+          
 Label Encoding
+
           ↓
 Train-Test Split
+
           ↓
 TF-IDF Feature Extraction
+
           ↓
 XGBoost Classification
+
           ↓
 Model Evaluation
+
           ↓
 Model & Vectorizer Saving
+
           ↓
 New Customer Query
+
           ↓
 Intent Prediction + Confidence Score
 
+
 Pipeline Steps
+
 Data Loading – Load customer support queries from the CSV dataset.
 
 Data Validation – Check dataset structure and missing values.
@@ -165,6 +194,7 @@ Project Structure
 
 credit-risk-project/
 │
+
 ├── app.py
 
 ├── data_pipeline.py

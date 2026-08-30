@@ -525,8 +525,49 @@ Git
 GitHub
 
 Conclusion
+
 Checkpoint 2 established the data processing pipeline and baseline benchmark. Checkpoint 3 improved the modelling workflow by testing multiple hyperparameter configurations and tracking experiments with MLflow. The best-performing configuration was selected based on the evaluation results and saved for future use.
 
+
+Checkpoint 4 – Integration + Testing
+Integration
+
+The credit-risk model was integrated into a FastAPI serving layer with a /predict endpoint for making predictions.
+
+Integration Testing
+
+Pytest was used to test the API endpoints and verify that valid prediction responses are returned successfully.
+
+Load Testing
+
+Load testing was performed using Locust with 50 concurrent users for 60 seconds.
+
+Performance Results
+Metric	Result
+Concurrent Users	50
+Test Duration	60 seconds
+Average Latency	Add your Locust result
+Throughput	Add your Locust result
+Failed Requests	Add your Locust result
+Files
+app.py – FastAPI model serving
+test_api.py – API integration tests
+locustfile.py – Load testing
+Commands
+
+Run API:
+
+uvicorn app:app --host 127.0.0.1 --port 8000
+
+
+Run tests:
+
+pytest test_api.py -v
+
+
+Run load test:
+
+locust -f locustfile.py --headless -u 50 -r 50 -t 60s --host http://127.0.0.1:8000
 
 
 👩‍💻 Author

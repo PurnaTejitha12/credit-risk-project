@@ -1,34 +1,52 @@
 Customer Support Intent Classification using XGBoost
 
-An NLP-based machine learning system that automatically classifies customer support queries into six different intents using TF-IDF and an XGBoost classifier.
+An NLP-based machine learning system that classifies customer support queries into six intents using TF-IDF and an XGBoost classifier.
 
-📌 Project Overview
+Table of Contents
+Overview
+Objectives
+Features
+Dataset
+Intent Categories
+Model Architecture
+Data Pipeline
+Evaluation Metrics
+Tech Stack
+Project Structure
+Installation
+Usage
+API
+Testing
+Load Testing
+Model Information
+Project Status
+Checkpoints
+Future Enhancements
+Author
+Overview
 
-Customer support teams receive a large number of queries every day. Manually categorizing these queries can be time-consuming and inefficient.
+Customer support teams receive a large number of queries every day. Manually categorizing these queries can be time-consuming.
 
 This project uses Natural Language Processing (NLP) and Machine Learning to automatically identify the intent of a customer's message.
 
-The system classifies customer queries into six categories:
+The system predicts one of six customer-support intents and provides a confidence score for the prediction.
 
-order_status
-return_request
-refund_enquiry
-delivery_delay
-product_query
-complaint
-
-The system also provides a confidence score for the predicted intent.
-
-🎯 Objectives
+Objectives
 Automatically classify customer support queries.
 Reduce manual effort in categorizing customer requests.
 Convert text data into numerical features using TF-IDF.
 Use XGBoost for multiclass intent classification.
 Provide prediction confidence for each query.
-Build a foundation for an intelligent customer-support application.
-Integrate the trained model into an API-based serving layer.
-Test the API and evaluate its performance under concurrent load.
-📊 Dataset
+Create a foundation for an intelligent customer-support application.
+Features
+Six customer-support intent categories.
+TF-IDF-based text feature extraction.
+XGBoost multiclass classification.
+Prediction confidence score.
+FastAPI serving layer.
+API integration tests using Pytest.
+Load testing using Locust with 50 concurrent users.
+Dataset
 
 The project uses a customer-support dataset containing 230 samples and three columns.
 
@@ -44,9 +62,9 @@ refund_enquiry	Questions about refunds
 delivery_delay	Queries about delayed deliveries
 product_query	Questions about products
 complaint	Customer complaints or issues
-🏗️ Model Architecture
+Model Architecture
 
-The system follows an NLP-based classification pipeline:
+The system follows the following NLP classification pipeline:
 
 Customer Query
       ↓
@@ -63,13 +81,13 @@ Intent Prediction
 Confidence Score
 
 Architecture Description
-The user enters a customer-support query.
-The text is preprocessed for NLP analysis.
+The user provides a customer-support query.
+The text is processed for NLP analysis.
 TF-IDF converts the text into numerical feature vectors.
 The feature vectors are passed to the XGBoost classifier.
-The classifier predicts one of the six customer-support intents.
+The classifier predicts one of the six intents.
 The system returns the predicted intent and confidence score.
-🔄 Data Pipeline
+Data Pipeline
 Customer Support Dataset
           ↓
 Data Loading
@@ -97,40 +115,19 @@ Intent Prediction
 Confidence Score
 
 Pipeline Steps
+Data Loading – Load customer-support queries from the dataset.
+Data Validation – Check the dataset structure and missing values.
+Text Cleaning – Prepare customer messages for NLP processing.
+Label Encoding – Convert intent categories into numerical labels.
+Train-Test Split – Divide the dataset into training and testing sets.
+TF-IDF Feature Extraction – Convert text into numerical feature vectors.
+XGBoost Classification – Perform multiclass intent classification.
+Model Evaluation – Evaluate classification performance.
+Model Saving – Save the trained model and vectorizer.
+Prediction – Process new customer queries and return the predicted intent and confidence score.
+Evaluation Metrics
 
-Data Loading
-Load customer-support queries from the dataset.
-
-Data Validation
-Check the dataset structure and identify missing or invalid values.
-
-Text Cleaning
-Prepare customer messages for NLP processing.
-
-Label Encoding
-Convert intent categories into numerical labels for model training.
-
-Train-Test Split
-Divide the dataset into training and testing sets.
-
-TF-IDF Feature Extraction
-Convert customer-support text into numerical feature vectors.
-
-XGBoost Classification
-Train the XGBoost multiclass classification model.
-
-Model Evaluation
-Evaluate the model using standard classification metrics.
-
-Model Saving
-Save the trained model and TF-IDF vectorizer for future predictions.
-
-Prediction
-Process new customer queries and return the predicted intent and confidence score.
-
-📈 Evaluation Metrics
-
-The model is evaluated using the following metrics:
+The project uses the following evaluation metrics:
 
 Metric	Purpose
 Accuracy	Measures the overall percentage of correct predictions
@@ -142,21 +139,22 @@ Confusion Matrix	Shows correct and incorrect predictions for each class
 
 Macro F1-Score is particularly useful for this multiclass classification problem because it gives equal importance to all six intent categories.
 
-💻 Technologies Used
-Python
-XGBoost
-Scikit-learn
-TF-IDF
-Pandas
-NumPy
-Joblib
-FastAPI
-Pytest
-Locust
-MLflow
-Git
-GitHub
-📁 Project Structure
+Tech Stack
+Technology	Purpose
+Python	Programming language
+XGBoost	Classification model
+Scikit-learn	Machine learning and preprocessing
+TF-IDF	Text feature extraction
+Pandas	Data processing
+NumPy	Numerical operations
+Joblib	Model/vectorizer loading and saving
+FastAPI	Model serving API
+Pytest	Integration testing
+Locust	Load testing
+MLflow	Experiment tracking
+Git	Version control
+GitHub	Repository hosting
+Project Structure
 credit-risk-project/
 │
 ├── app.py
@@ -169,7 +167,7 @@ credit-risk-project/
 ├── .gitignore
 └── README.md
 
-⚙️ Installation
+Installation
 1. Clone the Repository
 git clone YOUR_GITHUB_REPOSITORY_URL
 
@@ -179,39 +177,63 @@ cd credit-risk-project
 3. Install Dependencies
 pip install -r requirements.txt
 
-🚀 Running the Application
+Usage
 
-The model is served through a FastAPI application.
+The trained model is served through a FastAPI application.
 
-Start the API using:
+Start the application with:
 
 uvicorn app:app --host 127.0.0.1 --port 8000
 
 
-The API provides:
+The API provides the following endpoints:
 
 GET  /
 POST /predict
 
-
-The /predict endpoint accepts a customer-support query and returns the predicted intent and confidence score.
-
-Example Request
+Example Query
 {
   "text": "Where is my order?"
 }
 
 Example Response
+Intent: order_status
+Confidence: 80.27%
+
+
+Another example:
+
+Input:
+I want to return the product I purchased.
+
+Output:
+Intent: return_request
+
+API
+GET /
+
+Checks whether the FastAPI application is running.
+
+POST /predict
+
+Accepts a customer-support query and returns the predicted intent and confidence score.
+
+Request
+{
+  "text": "Where is my order?"
+}
+
+Response
 {
   "prediction": "order_status",
   "confidence": 80.27
 }
 
-🧪 Integration Testing
+Testing
 
 Integration testing is performed using Pytest.
 
-Run the tests using:
+Run the tests with:
 
 pytest test_api.py -v
 
@@ -220,19 +242,19 @@ The tests verify:
 
 API availability.
 Prediction endpoint functionality.
-Successful response status.
-Presence of prediction results.
-Presence of confidence scores.
-⚡ Load Testing
+Successful API responses.
+Presence of the prediction result.
+Presence of the confidence score.
+Load Testing
 
-Load testing is performed using Locust to evaluate API performance under concurrent requests.
+Load testing is performed using Locust.
 
-The required test uses:
+The required load test uses:
 
 50 concurrent users
-60-second test duration
+60-second duration
 
-Run the load test using:
+Run the load test with:
 
 locust -f locustfile.py --headless -u 50 -r 50 -t 60s --host http://127.0.0.1:8000
 
@@ -240,13 +262,13 @@ Performance Results
 Metric	Result
 Concurrent Users	50
 Test Duration	60 seconds
-Average Latency	Add Locust result
-Throughput	Add Locust result
-Failed Requests	Add Locust result
+Average Latency	Add actual Locust result
+Throughput	Add actual Locust result
+Failed Requests	Add actual Locust result
 
-Replace the result placeholders above with the actual values generated by Locust.
+The latency, throughput, and failure values should be updated using the results produced by Locust.
 
-🤖 Model Information
+Model Information
 
 The project uses an XGBoost multiclass classification model.
 
@@ -257,10 +279,32 @@ TF-IDF Vectorizer
 text_vectorizer.pkl
 
 
-These files allow the trained model and text preprocessing components to be reused for prediction.
+These files are used to load the trained model and text vectorizer for prediction.
 
-📌 Project Checkpoints
+Project Status
+Completed
+ Dataset collected and inspected
+ Six intent categories identified
+ XGBoost model obtained
+ TF-IDF vectorizer obtained
+ Model loading implemented
+ Basic prediction tested
+ Requirements file created
+ README documentation created
+ FastAPI model serving implemented
+ API integration tests implemented
+ Load testing performed with 50 concurrent users
+Remaining
+ Resolve final feature preprocessing mismatch
+ Complete label decoding
+ Complete model evaluation
+ Add Streamlit web interface
+ Add SHAP model explanations
+ Test all six intent categories
+ Deploy the application
+Checkpoints
 Checkpoint 1 — Research and Architecture Design
+Objective
 
 The project architecture, data pipeline, evaluation metrics, and repository structure were defined.
 
@@ -289,10 +333,10 @@ Objective
 The goal of Checkpoint 2 was to build the complete data-ingestion and preprocessing pipeline, train a baseline machine-learning model, establish an evaluation benchmark, and document the baseline results.
 
 Work Completed
-Loaded the customer-support dataset.
+Loaded the credit-risk dataset.
 Cleaned the data and handled missing values.
 Removed duplicate and empty records.
-Prepared the required features.
+Prepared numerical and categorical features.
 Applied preprocessing using a Scikit-learn pipeline.
 Split the dataset into training and testing sets.
 Trained a baseline Logistic Regression model.
@@ -310,10 +354,10 @@ The baseline model provides the initial benchmark for the project. Future models
 Checkpoint 3 — Model Training, Hyperparameter Tuning and MLflow
 Objective
 
-The goal of Checkpoint 3 was to train the primary classification model using multiple hyperparameter configurations, track experiments using MLflow, compare the results, and select the best-performing configuration.
+The goal of Checkpoint 3 was to train the primary credit-risk model using multiple hyperparameter configurations, track experiments using MLflow, compare the results, and select the best-performing configuration.
 
 Work Completed
-Used Logistic Regression as the primary model for the checkpoint experiment.
+Used Logistic Regression as the primary model.
 Tested three different hyperparameter configurations.
 Changed the regularization parameter C.
 Tested different class-weight settings.
@@ -324,10 +368,11 @@ Precision
 Recall
 F1-Score
 Logged model parameters and evaluation metrics using MLflow.
-Compared experimental results.
+Compared the experimental results.
 Selected the configuration with the best F1-Score.
 Saved the best-performing model.
 Saved the experiment comparison results.
+Saved the best model configuration.
 Hyperparameter Configurations
 Configuration	C	Solver	Class Weight
 Configuration 1	0.1	liblinear	None
@@ -344,7 +389,7 @@ MLflow Experiment Tracking
 
 MLflow was used to record each model configuration and its evaluation metrics.
 
-The experiments allow different configurations to be compared and provide evidence for selecting the best-performing configuration.
+The experiments allow different configurations to be compared and provide evidence for selecting the best model.
 
 The best configuration was selected based on the highest weighted F1-Score obtained during evaluation.
 
@@ -356,7 +401,7 @@ Random State = 42
 Test Size = 20%
 
 
-These settings help make the experiments reproducible.
+These settings are used to make the experiments reproducible.
 
 Conclusion
 
@@ -373,7 +418,7 @@ The goal of Checkpoint 4 was to integrate the trained model into a serving layer
 
 Integration
 
-The trained model was integrated into a FastAPI serving layer with a /predict endpoint for making predictions.
+The model was integrated into a FastAPI serving layer with a /predict endpoint for making predictions.
 
 Integration Testing
 
@@ -387,13 +432,13 @@ Performance Results
 Metric	Result
 Concurrent Users	50
 Test Duration	60 seconds
-Average Latency	Add actual result
-Throughput	Add actual result
-Failed Requests	Add actual result
+Average Latency	Add actual Locust result
+Throughput	Add actual Locust result
+Failed Requests	Add actual Locust result
 Checkpoint 4 Files
-app.py – FastAPI model-serving application
-test_api.py – API integration tests
-locustfile.py – Load-testing configuration
+app.py — FastAPI model serving
+test_api.py — API integration tests
+locustfile.py — Load testing
 Checkpoint 4 Commands
 
 Start the API:
@@ -410,27 +455,7 @@ Run load testing:
 
 locust -f locustfile.py --headless -u 50 -r 50 -t 60s --host http://127.0.0.1:8000
 
-📌 Current Project Status
- Dataset collected and inspected
- Six intent categories identified
- XGBoost model obtained
- TF-IDF vectorizer obtained
- Model loading implemented
- Basic prediction tested
- Requirements file created
- README documentation created
- Model integrated with FastAPI
- Integration tests implemented
- Load testing performed with 50 concurrent users
- Latency and throughput measured
- Resolve final feature preprocessing mismatch
- Complete label decoding
- Complete detailed model evaluation
- Add Streamlit web interface
- Add SHAP model explanations
- Test all six intent categories
- Deploy the application
-🚀 Future Enhancements
+Future Enhancements
 Develop a Streamlit-based web interface.
 Add SHAP-based model explanations.
 Increase the size and diversity of the training dataset.
@@ -439,7 +464,7 @@ Add automated responses for each intent.
 Improve classification accuracy.
 Deploy the application as a web service.
 Add continuous model monitoring.
-🔮 Expected Application Workflow
+Expected Application Workflow
 User
   ↓
 Enter Customer Query
@@ -456,6 +481,6 @@ Confidence Score
   ↓
 Customer Support Action
 
-👩‍💻 Author
+Author
 
 Purna Tejitha

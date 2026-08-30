@@ -333,6 +333,44 @@ Recall
 F1-Score
 Macro F1-Score
 Confusion Matrix
+
+Checkpoint 2 — Data Ingestion, Preprocessing and Baseline Model
+Objective
+The goal of Checkpoint 2 was to build the complete data ingestion and preprocessing pipeline, train a baseline machine learning model, establish an evaluation benchmark, and document the baseline results.
+
+Work Completed
+
+Loaded the credit-risk dataset.
+
+Cleaned the data and handled missing values.
+
+Removed duplicate and empty records.
+
+Prepared numerical and categorical features.
+
+Applied preprocessing using a Scikit-learn pipeline.
+
+Split the dataset into training and testing sets.
+
+Trained a baseline Logistic Regression model.
+
+Evaluated the baseline model using:
+
+Accuracy
+
+Precision
+
+Recall
+
+F1-score
+
+Saved the processed dataset and baseline model.
+
+Created a baseline evaluation report.
+
+Baseline Evaluation
+The baseline model provides the initial benchmark for the project. Future models can be compared against these baseline results to determine whether model improvements are effective.
+
 👩‍💻 Author
 
 Purna Tejitha

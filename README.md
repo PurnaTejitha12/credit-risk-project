@@ -135,12 +135,19 @@ Intent Prediction
 Confidence Score
 
 Architecture Description
+
 The user enters a customer support query.
+
 The text is preprocessed for NLP analysis.
+
 TF-IDF converts the text into numerical feature vectors.
+
 The feature vectors are passed to the XGBoost classifier.
+
 The classifier predicts one of the six customer-support intents.
+
 The system provides the predicted intent and confidence score.
+
 🔄 Data Pipeline
 Customer Support Dataset
           ↓
@@ -169,16 +176,27 @@ Intent Prediction
 Confidence Score
 
 Pipeline Steps
+
 Data Loading – Load customer support queries from the CSV dataset.
+
 Data Validation – Check the dataset structure and missing values.
+
 Text Cleaning – Prepare customer messages for NLP processing.
+
 Label Encoding – Convert intent categories into numerical labels.
+
 Train-Test Split – Divide the dataset into training and testing sets.
+
 TF-IDF Feature Extraction – Convert text into numerical feature vectors.
+
 XGBoost Classification – Use XGBoost for multiclass classification.
+
 Model Evaluation – Evaluate the classification performance.
+
 Model Saving – Save the trained model and vectorizer for future predictions.
+
 Prediction – Process new customer queries and return the predicted intent and confidence score.
+
 📈 Evaluation Metrics
 
 The model will be evaluated using the following metrics:
@@ -268,30 +286,55 @@ text_vectorizer.pkl
 These files allow the trained model and text preprocessing components to be reused for prediction.
 
 📌 Current Project Status
+ 
  Dataset collected and inspected
+ 
  Six intent categories identified
+ 
  XGBoost model obtained
+ 
  TF-IDF vectorizer obtained
+ 
  Model loading implemented
+ 
  Basic prediction tested
+ 
  Requirements file created
+ 
  README documentation created
+ 
  Resolve final feature preprocessing mismatch
+ 
  Complete label decoding
+ 
  Complete model evaluation
+ 
  Add Streamlit web interface
+ 
  Add SHAP model explanations
+ 
  Test all six intent categories
+ 
  Deploy the application
 🚀 Future Enhancements
-Develop a Streamlit-based web interface.
+D
+evelop a Streamlit-based web interface.
+
 Add SHAP-based model explanations.
+
 Increase the size and diversity of the training dataset.
+
 Perform XGBoost hyperparameter tuning.
+
 Add automated responses for each intent.
+
 Improve classification accuracy.
+
+
 Deploy the application as a web service.
+
 Add continuous model monitoring.
+
 🔮 Expected Application Workflow
 User
   ↓

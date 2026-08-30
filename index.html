@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Customer Support Intent Classifier</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Inter, Arial, sans-serif;
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at top left, #243b70 0%, transparent 35%),
+                radial-gradient(circle at bottom right, #173f5f 0%, transparent 35%),
+                #0b1120;
+            color: #f8fafc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1050px;
+        }
+
+        /* Header */
+
+        .header {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 7px 14px;
+            border-radius: 30px;
+            background: rgba(59, 130, 246, 0.15);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            color: #93c5fd;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .header h1 {
+            font-size: 38px;
+            font-weight: 750;
+            letter-spacing: -1px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #94a3b8;
+            font-size: 16px;
+        }
+
+        /* Main Grid */
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1.25fr 0.75fr;
+            gap: 22px;
+        }
+
+        .card {
+            background: rgba(15, 23, 42, 0.88);
+            border: 1px solid rgba(148, 163, 184, 0.14);
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(15px);
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .card-title h2 {
+            font-size: 20px;
+        }
+
+        .card-description {
+            color: #94a3b8;
+            font-size: 14px;
+            margin-bottom: 22px;
+            line-height: 1.6;
+        }
+
+        /* Textarea */
+
+        textarea {
+            width: 100%;
+            min-height: 180px;
+            resize: vertical;
+            padding: 17px;
+            border-radius: 14px;
+            border: 1px solid #334155;
+            background: #0f172a;
+            color: #f8fafc;
+            outline: none;
+            font-size: 15px;
+            line-height: 1.6;
+            transition: 0.2s;
+        }
+
+        textarea::placeholder {
+            color: #64748b;
+        }
+
+        textarea:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+        }
+
+        /* Button */
+
+        .predict-button {
+            width: 100%;
+            margin-top: 15px;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #2563eb, #4f46e5);
+            color: white;
+            font-size: 15px;
+            font-weight: 650;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .predict-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+        }
+
+        .predict-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Example buttons */
+
+        .examples {
+            margin-top: 22px;
+        }
+
+        .examples-title {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-bottom: 10px;
+        }
+
+        .example-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .example {
+            padding: 8px 11px;
+            border-radius: 9px;
+            border: 1px solid #334155;
+            background: #111c31;
+            color: #cbd5e1;
+            cursor: pointer;
+            font-size: 12px;
+            transition: 0.2s;
+        }
+
+        .example:hover {
+            border-color: #3b82f6;
+            color: #93c5fd;
+        }
+
+        /* Result */
+
+        .result {
+            min-height: 280px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .result-empty {
+            text-align: center;
+            color: #64748b;
+        }
+
+        .result-icon {
+            width: 65px;
+            height: 65px;
+            margin: 0 auto 15px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(59, 130, 246, 0.1);
+            font-size: 30px;
+        }
+
+        .result-empty h3 {
+            color: #cbd5e1;
+            font-size: 17px;
+            margin-bottom: 7px;
+        }
+
+        .result-empty p {
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .prediction-result {
+            display: none;
+        }
+
+        .prediction-label {
+            color: #94a3b8;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .intent {
+            font-size: 29px;
+            font-weight: 750;
+            color: #60a5fa;
+            margin-bottom: 25px;
+            word-break: break-word;
+        }
+
+        /* Confidence */
+
+        .confidence-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 9px;
+            font-size: 13px;
+        }
+
+        .confidence-header span:first-child {
+            color: #94a3b8;
+        }
+
+        .confidence-value {
+            color: #f8fafc;
+            font-weight: 700;
+        }
+
+        .progress {
+            width: 100%;
+            height: 9px;
+            background: #1e293b;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            border-radius: 20px;
+            background: linear-gradient(90deg, #2563eb, #60a5fa);
+            transition: width 0.7s ease;
+        }
+
+        /* Status */
+
+        .status {
+            margin-top: 18px;
+            padding: 11px 13px;
+            border-radius: 10px;
+            background: rgba(34, 197, 94, 0.08);
+            border: 1px solid rgba(34, 197, 94, 0.15);
+            color: #86efac;
+            font-size: 12px;
+            display: none;
+        }
+
+        .error {
+            margin-top: 18px;
+            padding: 11px 13px;
+            border-radius: 10px;
+            background: rgba(239, 68, 68, 0.08);
+            border: 1px solid rgba(239, 68, 68, 0.15);
+            color: #fca5a5;
+            font-size: 12px;
+            display: none;
+        }
+
+        /* Intent Cards */
+
+        .intent-list {
+            margin-top: 22px;
+        }
+
+        .intent-list h3 {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-bottom: 12px;
+        }
+
+        .intent-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+        }
+
+        .tag {
+            padding: 7px 9px;
+            background: #111c31;
+            border: 1px solid #26354d;
+            border-radius: 8px;
+            color: #cbd5e1;
+            font-size: 11px;
+        }
+
+        /* Footer */
+
+        .footer {
+            text-align: center;
+            margin-top: 25px;
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        /* Loading */
+
+        .spinner {
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            vertical-align: middle;
+            margin-right: 7px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Responsive */
+
+        @media (max-width: 800px) {
+            body {
+                padding: 18px;
+                align-items: flex-start;
+            }
+
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 29px;
+            }
+
+            .card {
+                padding: 21px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 25px;
+            }
+
+            textarea {
+                min-height: 150px;
+            }
+
+            .intent {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- Header -->
+        <header class="header">
+            <div class="badge">NLP • XGBoost • FastAPI</div>
+
+            <h1>Customer Support Intent Classifier</h1>
+
+            <p>
+                Automatically identify the intent behind customer support queries.
+            </p>
+        </header>
+
+
+        <!-- Dashboard -->
+        <main class="dashboard">
+
+            <!-- Input Card -->
+            <section class="card">
+
+                <div class="card-title">
+                    <span>💬</span>
+                    <h2>Analyze Customer Query</h2>
+                </div>
+
+                <p class="card-description">
+                    Enter a customer message below. The trained XGBoost model
+                    will classify the query and return its confidence score.
+                </p>
+
+                <textarea
+                    id="message"
+                    placeholder="Example: Where is my order?"
+                ></textarea>
+
+                <button
+                    class="predict-button"
+                    id="predictButton"
+                    onclick="predictIntent()"
+                >
+                    Analyze Query
+                </button>
+
+                <div class="examples">
+
+                    <div class="examples-title">
+                        Try an example
+                    </div>
+
+                    <div class="example-buttons">
+
+                        <button
+                            class="example"
+                            onclick="useExample('Where is my order?')"
+                        >
+                            Order status
+                        </button>
+
+                        <button
+                            class="example"
+                            onclick="useExample('I want to return the product')"
+                        >
+                            Return request
+                        </button>
+
+                        <button
+                            class="example"
+                            onclick="useExample('When will I receive my refund?')"
+                        >
+                            Refund
+                        </button>
+
+                        <button
+                            class="example"
+                            onclick="useExample('My delivery is late')"
+                        >
+                            Delivery delay
+                        </button>
+
+                        <button
+                            class="example"
+                            onclick="useExample('Tell me more about this product')"
+                        >
+                            Product query
+                        </button>
+
+                        <button
+                            class="example"
+                            onclick="useExample('I am unhappy with my order')"
+                        >
+                            Complaint
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- Result Card -->
+            <section class="card result">
+
+                <!-- Empty State -->
+                <div
+                    class="result-empty"
+                    id="emptyResult"
+                >
+
+                    <div class="result-icon">
+                        🎯
+                    </div>
+
+                    <h3>
+                        Prediction Result
+                    </h3>
+
+                    <p>
+                        Your classification result will appear here.
+                    </p>
+
+                </div>
+
+
+                <!-- Prediction -->
+                <div
+                    class="prediction-result"
+                    id="predictionResult"
+                >
+
+                    <div class="prediction-label">
+                        Predicted Intent
+                    </div>
+
+                    <div
+                        class="intent"
+                        id="intent"
+                    >
+                        —
+                    </div>
+
+                    <div class="confidence-header">
+
+                        <span>
+                            Confidence
+                        </span>
+
+                        <span
+                            class="confidence-value"
+                            id="confidenceText"
+                        >
+                            0%
+                        </span>
+
+                    </div>
+
+                    <div class="progress">
+
+                        <div
+                            class="progress-bar"
+                            id="progressBar"
+                        ></div>
+
+                    </div>
+
+                    <div
+                        class="status"
+                        id="status"
+                    >
+                        Prediction completed successfully.
+                    </div>
+
+                    <div
+                        class="error"
+                        id="error"
+                    >
+                        Unable to connect to the prediction API.
+                    </div>
+
+                </div>
+
+
+                <!-- Intent List -->
+                <div class="intent-list">
+
+                    <h3>
+                        Supported Intents
+                    </h3>
+
+                    <div class="intent-tags">
+
+                        <span class="tag">
+                            order_status
+                        </span>
+
+                        <span class="tag">
+                            return_request
+                        </span>
+
+                        <span class="tag">
+                            refund_enquiry
+                        </span>
+
+                        <span class="tag">
+                            delivery_delay
+                        </span>
+
+                        <span class="tag">
+                            product_query
+                        </span>
+
+                        <span class="tag">
+                            complaint
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+
+        <footer class="footer">
+            Customer Support Intent Classification • TF-IDF + XGBoost
+        </footer>
+
+    </div>
+
+
+    <script>
+
+        /*
+         * FastAPI endpoint
+         *
+         * Change this URL only if your FastAPI
+         * server is running on another address/port.
+         */
+
+        const API_URL = "http://127.0.0.1:8000/predict";
+
+
+        function useExample(text) {
+
+            document.getElementById("message").value = text;
+
+            document.getElementById("message").focus();
+
+        }
+
+
+        async function predictIntent() {
+
+            const message =
+                document.getElementById("message").value.trim();
+
+            const button =
+                document.getElementById("predictButton");
+
+            const emptyResult =
+                document.getElementById("emptyResult");
+
+            const predictionResult =
+                document.getElementById("predictionResult");
+
+            const intent =
+                document.getElementById("intent");
+
+            const confidenceText =
+                document.getElementById("confidenceText");
+
+            const progressBar =
+                document.getElementById("progressBar");
+
+            const status =
+                document.getElementById("status");
+
+            const error =
+                document.getElementById("error");
+
+
+            if (!message) {
+
+                alert("Please enter a customer query.");
+
+                return;
+
+            }
+
+
+            /*
+             * Loading state
+             */
+
+            button.disabled = true;
+
+            button.innerHTML =
+                '<span class="spinner"></span>Analyzing...';
+
+            status.style.display = "none";
+
+            error.style.display = "none";
+
+
+            try {
+
+                const response = await fetch(API_URL, {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        text: message
+                    })
+
+                });
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "API returned status " + response.status
+                    );
+
+                }
+
+
+                const data = await response.json();
+
+
+                /*
+                 * Support common response names.
+                 */
+
+                const predictedIntent =
+                    data.prediction ??
+                    data.intent ??
+                    data.predicted_class;
+
+
+                let confidence =
+                    data.confidence ??
+                    data.confidence_score ??
+                    data.probability;
+
+
+                if (predictedIntent === undefined) {
+
+                    throw new Error(
+                        "Prediction was not found in API response."
+                    );
+
+                }
+
+
+                /*
+                 * Convert confidence to percentage.
+                 *
+                 * If API returns 0.85,
+                 * it becomes 85%.
+                 *
+                 * If API returns 85,
+                 * it stays 85%.
+                 */
+
+                confidence = Number(confidence);
+
+                if (confidence <= 1) {
+                    confidence = confidence * 100;
+                }
+
+
+                confidence = Math.max(
+                    0,
+                    Math.min(100, confidence)
+                );
+
+
+                /*
+                 * Display result.
+                 */
+
+                emptyResult.style.display = "none";
+
+                predictionResult.style.display = "block";
+
+                intent.textContent = predictedIntent;
+
+                confidenceText.textContent =
+                    confidence.toFixed(2) + "%";
+
+                progressBar.style.width =
+                    confidence + "%";
+
+
+                status.style.display = "block";
+
+            }
+
+            catch (err) {
+
+                console.error(err);
+
+                emptyResult.style.display = "none";
+
+                predictionResult.style.display = "block";
+
+                intent.textContent = "API Error";
+
+                confidenceText.textContent = "—";
+
+                progressBar.style.width = "0%";
+
+                error.textContent =
+                    "Could not connect to FastAPI. Make sure the API is running.";
+
+                error.style.display = "block";
+
+            }
+
+            finally {
+
+                button.disabled = false;
+
+                button.textContent = "Analyze Query";
+
+            }
+
+        }
+
+
+        /*
+         * Allow Ctrl + Enter to submit.
+         */
+
+        document
+            .getElementById("message")
+            .addEventListener("keydown", function(event) {
+
+                if (event.ctrlKey && event.key === "Enter") {
+
+                    predictIntent();
+
+                }
+
+            });
+
+    </script>
+
+</body>
+</html>

@@ -371,6 +371,121 @@ Created a baseline evaluation report.
 Baseline Evaluation
 The baseline model provides the initial benchmark for the project. Future models can be compared against these baseline results to determine whether model improvements are effective.
 
+Checkpoint 3 — Model Training, Hyperparameter Tuning and MLflow
+
+Objective
+The goal of Checkpoint 3 was to train the primary credit-risk model using multiple hyperparameter configurations, track the experiments using MLflow, compare the results, and select the best-performing configuration.
+
+
+Work Completed
+
+Used Logistic Regression as the primary model.
+
+Tested three different hyperparameter configurations.
+
+Changed the regularization parameter C.
+
+Tested different class-weight settings.
+
+Used the same train/test split for fair comparison.
+
+Evaluated each configuration using:
+
+Accuracy
+
+Precision
+
+Recall
+
+F1-score
+
+Logged model parameters and evaluation metrics using MLflow.
+
+Compared the experimental results.
+
+Selected the configuration with the best F1-score.
+
+Saved the best-performing model.
+
+Saved the experiment comparison results.
+
+Saved the best model configuration.
+
+Hyperparameter Configurations
+
+Configuration 1
+
+C = 0.1
+
+solver = liblinear
+
+class_weight = None
+
+
+Configuration 2
+
+C = 1.0
+
+solver = liblinear
+
+class_weight = balanced
+
+
+Configuration 3
+
+C = 10.0
+
+solver = liblinear
+
+class_weight = None
+
+
+Checkpoint 3 Files
+
+src/
+
+└── train_mlflow.py
+
+models/
+
+└── best_model.joblib
+
+
+MLflow Experiment Tracking
+
+MLflow was used to record each model configuration and its evaluation metrics. The experiments allow the different configurations to be compared and provide evidence for selecting the best model.
+
+The best configuration was selected based on the highest weighted F1-score obtained during evaluation.
+
+
+Reproducibility
+
+The experiments use a fixed random state of 42 and a test size of 20% to make the results reproducible.
+
+
+Technologies Used
+
+Python
+
+Pandas
+
+NumPy
+
+Scikit-learn
+
+MLflow
+
+Joblib
+
+Git
+
+GitHub
+
+Conclusion
+Checkpoint 2 established the data processing pipeline and baseline benchmark. Checkpoint 3 improved the modelling workflow by testing multiple hyperparameter configurations and tracking experiments with MLflow. The best-performing configuration was selected based on the evaluation results and saved for future use.
+
+
+
 👩‍💻 Author
 
 Purna Tejitha

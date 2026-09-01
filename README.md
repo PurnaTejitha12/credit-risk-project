@@ -23,7 +23,7 @@ This project builds a machine learning solution that:
 
 ---
 
-## Objectives
+## Project Objectives
 
 The main objectives of this project are:
 
@@ -39,32 +39,112 @@ The main objectives of this project are:
 
 ---
 
-## Architecture
+## Project Architecture
 
 ```text
-                    Loan Application Data
-                             |
-                             v
-                    Data Preprocessing
-                             |
-                             v
-                       XGBoost Model
-                             |
-              +--------------+--------------+
-              |                             |
-              v                             v
-        Model Evaluation                SHAP
-        ROC-AUC / Gini              Explainability
-              |                             |
-              +--------------+--------------+
-                             |
-                             v
-                       FastAPI REST API
-                             |
-                             v
-                       React Frontend
-                             |
-              +--------------+--------------+
-              |              |              |
-              v              v              v
-          Risk Score      Risk Band      SHAP Factors
+                         RAW DATASET
+                              |
+                              v
+                    +-------------------+
+                    |   Data Loading    |
+                    +---------+---------+
+                              |
+                              v
+                    +-------------------+
+                    |   Data Cleaning   |
+                    |                   |
+                    | - Duplicates      |
+                    | - Invalid values  |
+                    | - Missing values  |
+                    +---------+---------+
+                              |
+                              v
+                    +-------------------+
+                    | Feature Processing|
+                    |                   |
+                    | - Imputation       |
+                    | - One-Hot Encoding|
+                    +---------+---------+
+                              |
+                              v
+                    +-------------------+
+                    | Train/Test Split  |
+                    +---------+---------+
+                              |
+                              v
+                    +-------------------+
+                    |     XGBoost       |
+                    |  Model Training   |
+                    +---------+---------+
+                              |
+                 +------------+------------+
+                 |                         |
+                 v                         v
+        +-------------------+     +-------------------+
+        | Model Evaluation  |     |       SHAP        |
+        |                   |     |  Explainability   |
+        | ROC-AUC           |     |                   |
+        | Gini              |     | Top 3 Factors     |
+        | Precision/Recall  |     | Waterfall Chart   |
+        +-------------------+     +---------+---------+
+                                            |
+                                            v
+                                  +-------------------+
+                                  |    FastAPI REST   |
+                                  |        API        |
+                                  +---------+---------+
+                                            |
+                                            v
+                                  +-------------------+
+                                  |   React Frontend  |
+                                  |                   |
+                                  | Risk Score        |
+                                  | Risk Band         |
+                                  | Risk Factors      |
+                                  | SHAP Visualization|
+                                  +-------------------+
+
+
+Raw Dataset
+    |
+    v
+Load Data
+    |
+    v
+Data Cleaning
+    |
+    +--> Remove duplicates
+    |
+    +--> Handle invalid employment length
+    |
+    v
+Feature / Target Separation
+    |
+    v
+Train / Test Split
+    |
+    v
+Preprocessing
+    |
+    +--> Numerical imputation
+    |
+    +--> Categorical imputation
+    |
+    +--> One-hot encoding
+    |
+    v
+XGBoost Training
+    |
+    v
+Model Evaluation
+    |
+    +--> ROC-AUC
+    |
+    +--> Gini
+    |
+    +--> Classification Report
+    |
+    +--> Confusion Matrix
+    |
+    v
+Model Serialization

@@ -1,0 +1,45 @@
+FINWISE LENDING - BASELINE MODEL REPORT
+============================================================
+
+1. MODEL OVERVIEW
+------------------------------------------------------------
+Model: XGBoost Classifier
+Task: Binary Credit Risk Classification
+Test Split: 20%
+Random State: 42
+
+2. EVALUATION METRICS
+------------------------------------------------------------
+Accuracy : 0.9110
+Precision: 0.7947
+Recall   : 0.7997
+F1 Score : 0.7972
+ROC-AUC  : 0.9438
+Gini     : 0.8876
+
+3. GINI ACCEPTANCE CRITERION
+------------------------------------------------------------
+Required Gini: >= 0.45
+Actual Gini: 0.8876
+Status: PASS
+
+4. CONFUSION MATRIX
+------------------------------------------------------------
+[[4773  293]
+ [ 284 1134]]
+
+5. CLASSIFICATION REPORT
+------------------------------------------------------------
+              precision    recall  f1-score   support
+
+           0       0.94      0.94      0.94      5066
+           1       0.79      0.80      0.80      1418
+
+    accuracy                           0.91      6484
+   macro avg       0.87      0.87      0.87      6484
+weighted avg       0.91      0.91      0.91      6484
+
+6. BASELINE CONCLUSION
+------------------------------------------------------------
+The baseline model meets the minimum Gini acceptance criterion of 0.45.
+Further model improvement can focus on calibration, hyperparameter tuning, explainability, and fairness.
